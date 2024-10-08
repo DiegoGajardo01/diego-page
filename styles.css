@@ -3,20 +3,19 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Nunito', sans-serif; /* Cambiamos a Poppin */
+    font-family: 'Nunito', sans-serif;
 }
 
 body {
     transition: background-color 0.3s ease, color 0.3s ease;
-    height: 100vh; /* Asegura que el cuerpo ocupe el 100% de la ventana */
+    height: 100vh;
     display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center;     /* Centra verticalmente */
+    justify-content: center;
+    align-items: center;
     background-color: var(--background-color);
     color: var(--text-color);
 }
 
-/* Contenedor de la tarjeta */
 .container {
     width: 90%;
     max-width: 400px;
@@ -28,7 +27,6 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Perfil */
 .profile-image {
     width: 100px;
     height: 100px;
@@ -48,7 +46,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* Links */
 .links .link {
     display: block;
     margin: 10px 0;
@@ -65,101 +62,41 @@ body {
     background-color: #f0c500;
 }
 
-/* Tema Claro */
 :root {
     --background-color: #defdff;
     --text-color: #000;
     --container-bg: white;
 }
 
-/* Tema Oscuro */
 body.dark-mode {
     --background-color: #020c1b;
     --text-color: white;
     --container-bg: #04142b;
 }
 
-/* Mini-card detrás del switch */
-.mini-card {
-    background-color: var(--container-bg);
-    padding: 10px;
-    border-radius: 12px; /* Tarjeta con bordes redondeados */
-    display: flex;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.theme-toggle-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
 }
 
-/* Posicionamos el interruptor en la esquina superior derecha */
+.theme-toggle-btn .fa-sun {
+    color: #ffd700;
+}
+
+.theme-toggle-btn .fa-moon {
+    color: #ffffff;
+}
+
 .theme-toggle {
     position: fixed;
-    top: 40px; /* Más espacio arriba */
+    top: 20px;
     right: 20px;
     z-index: 100;
 }
 
-/* Fijar el ancho del texto */
-#theme-label {
-    margin-left: 10px;
-    width: 100px; /* Ancho fijo */
-    text-align: left; /* Alineación del texto */
-    color: var(--text-color); /* Para mantener el color sincronizado con el tema */
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 26px;
-}
-
-.switch input {
-    display: none;
-}
-
-.slider {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    border-radius: 34px;
-    cursor: pointer;
-    transition: .4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 22px;
-    width: 22px;
-    left: 2px;
-    bottom: 2px;
-    background-color: white;
-    border-radius: 50%;
-    transition: .4s;
-}
-
-input:checked + .slider {
-    background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-    transform: translateX(24px);
-}
-
-/* Ajuste de tamaño del interruptor */
-.switch {
-    width: 50px; 
-    height: 26px;
-}
-
-.slider:before {
-    width: 22px;
-    height: 22px;
-}
-
-/* Sección del correo */
 .email-section {
     margin-top: 20px;
     text-align: center;
@@ -185,5 +122,5 @@ input:checked + .slider:before {
 }
 
 .copy-btn:active {
-    transform: scale(0.98); /* Pequeño efecto al hacer clic */
+    transform: scale(0.98);
 }

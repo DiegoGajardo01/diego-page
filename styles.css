@@ -74,6 +74,10 @@ body.dark-mode {
     --container-bg: #04142b;
 }
 
+body.dark-mode #email-text {
+    color: var(--link-color-dark); /* Definir el color del enlace en modo oscuro */
+}
+
 .theme-toggle-btn {
     background: none;
     border: none;
@@ -105,6 +109,8 @@ body.dark-mode {
 #email-text {
     font-size: 16px;
     margin-bottom: 10px;
+    text-decoration: none;
+    color: var(--link-color);
 }
 
 .copy-btn {

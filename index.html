@@ -5,35 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diego Gajardo</title>
     <link rel="shortcut icon" href="media\icon.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="theme-toggle">
-        <button id="theme-toggle-btn" class="theme-toggle-btn">
-            <i class="fas fa-sun"></i>
-        </button>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">DIEGO GAJARDO.</div>
+                <div class="nav-links">
+                    <a href="#projects">Proyectos</a>
+                    <a href="#skills">Habilidades</a>
+                    <a href="#contact">Contacto</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-container">
+            <div class="hero-text">
+                <h1>Creo un Futuro Digital.</h1>
+                <p>Ingeniero en Informática especializado en desarrollo de software, Business Intelligence y Machine Learning. Transformando datos en soluciones para impulsar negocios y mejorar experiencias.</p>
+                <a href="#contact" class="contact-button">Contactarme</a>
+            </div>
+            <div class="hero-image">
+                <img src="media\profile200x200.png" alt="Diego Gajardo">
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2>Proyectos</h2>
+            <div class="projects-container">
+                <div class="projects-carousel" id="projectsCarousel">
+                    <!-- Los proyectos se cargarán dinámicamente con JavaScript -->
+                </div>
+                <div class="carousel-arrows">
+                    <div class="carousel-arrow carousel-arrow-prev">&lt;</div>
+                    <div class="carousel-arrow carousel-arrow-next">&gt;</div>
+                </div>
+                <div class="carousel-dots" id="carouselDots">
+                    <!-- Los puntos se generarán dinámicamente con JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2>Habilidades.</h2>
+            <p class="skills-description">Amplio conocimiento en programación, análisis de datos, Business Intelligence y Machine Learning, con experiencia en diversos proyectos y tecnologías.</p>
+            
+            <div class="skill-bar-container">
+                <div class="skill-bar-label">
+                    <span>Python (Pandas, NumPy, Scikit-Learn, TensorFlow, Django)</span>
+                    <span>Avanzado</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-bar-fill" style="width: 90%;"></div>
+                </div>
+            </div>
+            
+            <div class="skill-bar-container">
+                <div class="skill-bar-label">
+                    <span>BI & Data Tools (Power BI, Tableau, Pentaho, KNIME)</span>
+                    <span>Avanzado</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-bar-fill" style="width: 85%;"></div>
+                </div>
+            </div>
+
+            <div class="skill-bar-container">
+                <div class="skill-bar-label">
+                    <span>Machine Learning & Data Science</span>
+                    <span>Avanzado</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-bar-fill" style="width: 80%;"></div>
+                </div>
+            </div>
+            
+            <div class="skill-bar-container">
+                <div class="skill-bar-label">
+                    <span>SQL (MySQL) & MongoDB</span>
+                    <span>Intermedio</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-bar-fill" style="width: 75%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>¿Necesitas ayuda con tu proyecto?<br>Hablemos juntos!</h2>
+            <p>Estoy disponible para colaborar en proyectos de desarrollo, análisis de datos y soluciones de BI. Contáctame y conversemos sobre cómo puedo ayudarte.</p>
+            <a href="mailto:contacto@diegogajardo.com" class="contact-button">Mandame un Mail</a>
+        </div>
+    </section>
+
+    <section class="testimonial">
+        <div class="container">
+            <div class="testimonial-text">
+                <h3>¿Necesitas ayuda con tu próximo proyecto? ¡Hablemos juntos!</h3>
+                <a href="mailto:contacto@diegogajardo.com" class="contact-button">Contactarme</a>
+            </div>
+            <div class="testimonial-card">
+                <p>"Diego demostró un excelente dominio técnico y una gran capacidad para entender nuestras necesidades. Su trabajo en la implementación de nuestras soluciones IoT fue excepcional."</p>
+                <div class="testimonial-author">
+                    <img src="/api/placeholder/40/40" alt="Cliente">
+                    <span>Felipe Hugo - CTO Bineural</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>© 2025 Diego Gajardo. Todos los derechos reservados.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://www.linkedin.com/in/diego-gajardo1/"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 8C17.5913 8 19.1174 8.63214 20.2426 9.75736C21.3679 10.8826 22 12.4087 22 14V21H18V14C18 13.4696 17.7893 12.9609 17.4142 12.5858C17.0391 12.2107 16.5304 12 16 12C15.4696 12 14.9609 12.2107 14.5858 12.5858C14.2107 12.9609 14 13.4696 14 14V21H10V14C10 12.4087 10.6321 10.8826 11.7574 9.75736C12.8826 8.63214 14.4087 8 16 8Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6 9H2V21H6V9Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4 6C5.10457 6 6 5.10457 6 4C6 2.89543 5.10457 2 4 2C2.89543 2 2 2.89543 2 4C2 5.10457 2.89543 6 4 6Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Ventana modal para proyectos -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Imagen del proyecto">
+                <div id="modalTech" class="modal-tech"></div>
+                <div id="modalDesc" class="modal-description"></div>
+                <div class="modal-links">
+                    <a id="modalDemo" href="#" class="modal-link" target="_blank">Ver Demo</a>
+                    <a id="modalRepo" href="#" class="modal-link" target="_blank">Ver Repositorio</a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="container">
-        <div class="profile">
-            <img src="media/profile200x200.png" alt="Perfil" class="profile-image">
-            <h1>Diego Gajardo</h1>
-            <p>Estudiante de Ingeniería en Informática con intereses en:</p>
-            <p>📈 Data Science e Inteligencia de Negocios 📈</p>
-        </div>
-
-        <div class="links">
-            <a href="https://www.linkedin.com/in/diego-gajardo1/" class="link" target="_blank">LinkedIn</a>
-            <a href="https://instagram.com/deggz_" class="link" target="_blank">Instagram</a>
-        </div>
-
-        <div class="email-section">
-            <a href="mailto:contacto@diegogajardo.com" id="email-text"><p>Contacto: contacto@diegogajardo.com</p></a>
-        </div>
-    </div>
-
-    <script src="scripts.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

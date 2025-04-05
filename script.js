@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Funciones de inicialización
 function initProjectsCarousel() {
-    console.log("Inicializando el carrusel de proyectos...");
     const carousel = document.getElementById('projectsCarousel');
     const dotsContainer = document.getElementById('carouselDots');
     
@@ -47,7 +46,17 @@ function initProjectsCarousel() {
         // Añadir card al carrusel
         carousel.appendChild(projectCard);
     });
-    
+     // Agregar eventos de clic a las flechas
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+ 
+    prevButton.addEventListener('click', () => {
+        goToSlide(currentSlide - 1);
+     });
+ 
+    nextButton.addEventListener('click', () => {
+        goToSlide(currentSlide + 1);
+     });
     // Crear dots de navegación
     const totalPages = Math.ceil(projects.length / currentProjectsPerView);
     for (let i = 0; i < totalPages; i++) {
@@ -323,3 +332,23 @@ window.addEventListener('click', (event) => {
 document.addEventListener('DOMContentLoaded', () => {
     initProjectsCarousel();
 });
+
+// Función para actualizar el estado de las flechas
+function updateArrowsState(totalPages) {
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+
+    // Deshabilitar la flecha anterior si estamos en la primera diapositiva
+    if (currentSlide === 0) {
+        prevButton.disabled = true; // O puedes ocultar el botón
+    } else {
+        prevButton.disabled = false; // Habilitar el botón
+    }
+
+    // Deshabilitar la flecha siguiente si estamos en la última diapositiva
+    if (currentSlide >= totalPages - 1) {
+        nextButton.disabled = true; // O puedes ocultar el botón
+    } else {
+        nextButton.disabled = false; // Habilitar el botón
+    }
+}

@@ -71,6 +71,9 @@ function initProjectsCarousel() {
     const carousel = document.getElementById('projectsCarousel');
     const dotsContainer = document.getElementById('carouselDots');
     
+    // Actualizar projectsPerView basado en el ancho actual
+    const currentProjectsPerView = window.innerWidth > 992 ? 3 : window.innerWidth > 768 ? 2 : 1;
+    
     // Limpiar contenedores por si ya tienen elementos
     carousel.innerHTML = '';
     dotsContainer.innerHTML = '';
@@ -100,7 +103,7 @@ function initProjectsCarousel() {
     });
     
     // Crear dots de navegación
-    const totalPages = Math.ceil(projects.length / projectsPerView);
+    const totalPages = Math.ceil(projects.length / currentProjectsPerView);
     for (let i = 0; i < totalPages; i++) {
         const dot = document.createElement('div');
         dot.className = 'dot';
@@ -111,6 +114,11 @@ function initProjectsCarousel() {
         });
         dotsContainer.appendChild(dot);
     }
+        // Configurar desplazamiento manual
+        setupDragScroll();
+        
+        // Mostrar el slide inicial
+        goToSlide(0);
     
     // Crear flechas de navegación si no existen
     if (!document.querySelector('.carousel-arrow-prev')) {
@@ -154,7 +162,12 @@ function initProjectsCarousel() {
 function goToSlide(index) {
     const carousel = document.getElementById('projectsCarousel');
     const dots = document.querySelectorAll('.dot');
-    const totalPages = Math.ceil(projects.length / projectsPerView);
+    const cards = carousel.querySelectorAll('.project-card');
+    
+    // Actualizar projectsPerView basado en el ancho actual de la ventana
+    const currentProjectsPerView = window.innerWidth > 992 ? 3 : window.innerWidth > 768 ? 2 : 1;
+        
+    const totalPages = Math.ceil(projects.length / currentProjectsPerView);
     
     // Validar el índice para que esté dentro de los límites
     if (index < 0) index = 0;
@@ -164,9 +177,11 @@ function goToSlide(index) {
     currentSlide = index;
     
     // Calcular posición de scroll
-    const cardWidth = carousel.querySelector('.project-card').offsetWidth;
+    const cardWidth = cards[0].offsetWidth;
     const gap = parseInt(window.getComputedStyle(carousel).gap) || 20;
-    const scrollPosition = index * projectsPerView * (cardWidth + gap);
+    
+    // En móviles, necesitamos mover tarjetas individuales, no grupos
+    const scrollPosition = index * (cardWidth + gap) * currentProjectsPerView;
     
     // Aplicar scroll
     carousel.scrollTo({
@@ -184,8 +199,48 @@ function goToSlide(index) {
     });
     
     // Actualizar estado de flechas
-    updateArrowsState();
+    updateArrowsState(totalPages);
 }
+
+// Actualizar updateArrowsState para recibir totalPages como parámetro
+function updateArrowsState(totalPages) {
+    const prevArrow = document.querySelector('.carousel-arrow-prev');
+    const nextArrow = document.querySelector('.carousel-arrow-next');
+    
+    if (prevArrow && nextArrow) {
+        // Deshabilitar/habilitar flecha previa
+        if (currentSlide === 0) {
+            prevArrow.classList.add('disabled');
+        } else {
+            prevArrow.classList.remove('disabled');
+        }
+        
+        // Deshabilitar/habilitar flecha siguiente
+        if (currentSlide === totalPages - 1) {
+            nextArrow.classList.add('disabled');
+        } else {
+            nextArrow.classList.remove('disabled');
+        }
+    }
+}
+
+// Corregir la función para ajustar a la tarjeta más cercana
+    function snapToNearestCard() {
+        const carousel = document.getElementById('projectsCarousel');
+        const cardWidth = carousel.querySelector('.project-card').offsetWidth;
+        const gap = parseInt(window.getComputedStyle(carousel).gap) || 20;
+        
+        // Actualizar projectsPerView basado en el ancho actual
+        const currentProjectsPerView = window.innerWidth > 992 ? 3 : window.innerWidth > 768 ? 2 : 1;
+        
+        // Calcular el índice más cercano considerando cuántos proyectos se muestran por vista
+        const scrollPosition = carousel.scrollLeft;
+        const itemWidth = cardWidth + gap;
+        const nearestIndex = Math.round(scrollPosition / (itemWidth * currentProjectsPerView));
+        
+        // Ir al slide más cercano
+        goToSlide(nearestIndex);
+    }
 
 // Función para actualizar el estado de las flechas
 function updateArrowsState() {
@@ -325,13 +380,8 @@ function closeProjectModal() {
 
 // Manejar resize para responsive
 window.addEventListener('resize', () => {
-    // Actualizar número de proyectos por vista
-    const newProjectsPerView = window.innerWidth > 992 ? 3 : window.innerWidth > 768 ? 2 : 1;
-    
-    // Si cambia el número de proyectos por vista, reinicializar el carrusel
-    if (newProjectsPerView !== projectsPerView) {
-        initProjectsCarousel();
-    }
+    // Reinicializar el carrusel para que se adapte al nuevo tamaño
+    initProjectsCarousel();
 });
 
 // Evento para cerrar modal con la X
@@ -347,5 +397,176 @@ window.addEventListener('click', (event) => {
 
 // Inicializar carrusel cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', () => {
+    initProjectsCarousel();
+});
+
+// Funcionalidad de menú hamburguesa
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const menuOverlay = document.querySelector('.menu-overlay');
+    
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function() {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        });
+    }
+    
+    if (menuOverlay) {
+        menuOverlay.addEventListener('click', function() {
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+    
+    // Cerrar el menú al hacer clic en un enlace
+    const navLinkElements = document.querySelectorAll('.nav-links a');
+    navLinkElements.forEach(link => {
+        link.addEventListener('click', function() {
+            menuToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+});
+
+// Arreglos para el carrusel - Corregir deslizamiento táctil
+function setupDragScroll() {
+    const carousel = document.getElementById('projectsCarousel');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let hasMoved = false;
+    
+    // Eventos para mouse
+    carousel.addEventListener('mousedown', (e) => {
+        isDown = true;
+        hasMoved = false;
+        carousel.classList.add('active');
+        startX = e.pageX - carousel.offsetLeft;
+        scrollLeft = carousel.scrollLeft;
+        e.preventDefault(); // Prevenir comportamiento por defecto
+    });
+    
+    carousel.addEventListener('mouseleave', () => {
+        if (isDown) {
+            isDown = false;
+            carousel.classList.remove('active');
+            if (hasMoved) {
+                snapToNearestCard();
+            }
+        }
+    });
+    
+    carousel.addEventListener('mouseup', (e) => {
+        if (isDown) {
+            isDown = false;
+            carousel.classList.remove('active');
+            if (hasMoved) {
+                snapToNearestCard();
+            } else {
+                // Si no se ha movido, es un clic en la tarjeta
+                const card = e.target.closest('.project-card');
+                if (card) {
+                    const projectId = parseInt(card.dataset.projectId);
+                    const project = projects.find(p => p.id === projectId);
+                    if (project) {
+                        openProjectModal(project);
+                    }
+                }
+            }
+        }
+    });
+    
+    carousel.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        hasMoved = true;
+        const x = e.pageX - carousel.offsetLeft;
+        const walk = (x - startX) * 2; // Velocidad de scroll
+        carousel.scrollLeft = scrollLeft - walk;
+    });
+    
+    // Eventos para dispositivos táctiles - corregidos
+    carousel.addEventListener('touchstart', (e) => {
+        isDown = true;
+        hasMoved = false;
+        carousel.classList.add('active');
+        startX = e.touches[0].pageX - carousel.offsetLeft;
+        scrollLeft = carousel.scrollLeft;
+    }, { passive: false });
+    
+    carousel.addEventListener('touchend', (e) => {
+        if (isDown) {
+            isDown = false;
+            carousel.classList.remove('active');
+            if (hasMoved) {
+                snapToNearestCard();
+            } else {
+                // Si no se ha movido, es un tap en la tarjeta
+                const card = e.target.closest('.project-card');
+                if (card) {
+                    const projectId = parseInt(card.dataset.projectId);
+                    const project = projects.find(p => p.id === projectId);
+                    if (project) {
+                        openProjectModal(project);
+                    }
+                }
+            }
+        }
+    });
+    
+    carousel.addEventListener('touchmove', (e) => {
+        if (!isDown) return;
+        hasMoved = true;
+        const x = e.touches[0].pageX - carousel.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        carousel.scrollLeft = scrollLeft - walk;
+        e.preventDefault(); // Prevenir scroll de la página
+    }, { passive: false });
+}
+
+// Corregir la función para ajustar a la tarjeta más cercana
+function snapToNearestCard() {
+    const carousel = document.getElementById('projectsCarousel');
+    const cardWidth = carousel.querySelector('.project-card').offsetWidth;
+    const gap = parseInt(window.getComputedStyle(carousel).gap) || 20;
+    const totalWidth = cardWidth + gap;
+    
+    // Calcular el índice más cercano
+    const scrollPosition = carousel.scrollLeft;
+    const nearestIndex = Math.round(scrollPosition / totalWidth / projectsPerView);
+    
+    // Ir al slide más cercano
+    goToSlide(nearestIndex);
+}
+
+// Arreglar las flechas del carrusel
+document.addEventListener('DOMContentLoaded', () => {
+    // Agregar event listeners para las flechas de navegación
+    const prevArrow = document.querySelector('.carousel-arrow-prev');
+    const nextArrow = document.querySelector('.carousel-arrow-next');
+    
+    if (prevArrow) {
+        prevArrow.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evitar que el evento se propague
+            goToSlide(currentSlide - 1);
+        });
+    }
+    
+    if (nextArrow) {
+        nextArrow.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evitar que el evento se propague
+            goToSlide(currentSlide + 1);
+        });
+    }
+    
+    // Inicializar el carrusel
     initProjectsCarousel();
 });

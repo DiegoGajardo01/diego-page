@@ -562,3 +562,131 @@ footer {
         gap: 20px;
     }
 }
+
+/* Menú hamburguesa para móviles */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+}
+
+.menu-toggle span {
+    height: 3px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Clases para activar menú */
+.nav-links.active {
+    display: flex;
+}
+
+/* Ajustes de responsive más específicos */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .menu-toggle {
+        display: flex;
+        z-index: 101;
+    }
+    
+    .nav-links {
+        display: none;
+        position: fixed;
+        flex-direction: column;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 70%;
+        background-color: #1A1A1A;
+        z-index: 100;
+        padding: 80px 30px 30px;
+        justify-content: flex-start;
+        gap: 30px;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Estilo de transformación para el menú hamburguesa activo */
+    .menu-toggle.active span:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+    
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .menu-toggle.active span:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+
+    /* Centrado en responsive */
+    .hero-text h1, .hero-text p {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-container {
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Ajustes para el carrusel en móviles */
+    .carousel-arrows {
+        position: relative;
+        left: 0;
+        right: 0;
+        top: 0;
+        transform: none;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .carousel-arrow {
+        position: static;
+    }
+    
+    /* Overlay para cerrar menú al tocar fuera */
+    .menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 99;
+    }
+    
+    .menu-overlay.active {
+        display: block;
+    }
+}
+
+/* Nuevos arreglos para vista móvil más pequeña */
+@media (max-width: 430px) {
+    .hero-text h1 {
+        font-size: 36px;
+    }
+    
+    .hero-text p {
+        font-size: 16px;
+    }
+    
+    .contact-button {
+        padding: 10px 25px;
+    }
+    
+    .project-card {
+        height: auto;
+        min-height: 300px;
+    }
+}

@@ -25,7 +25,7 @@ const projects = [
         title: "Chatbot con IA para eCommerce",
         description: "Desarrollo e implementación de un chatbot impulsado por LLMs para atención al cliente en plataforma de comercio electrónico.",
         image: "/api/placeholder/500/300", 
-        tech: ["Python", "Django", "NLP", "TensorFlow", "MongoDB"],
+        tech: ["Shopify", "Python"],
         demoLink: "#",
         repoLink: "#",
         fullDescription: "Desarrollo de un chatbot inteligente basado en modelos LLM para mejorar la experiencia de usuario en una plataforma de comercio electrónico. El sistema responde consultas sobre productos, gestiona reclamos básicos y facilita el proceso de compra. Se implementó una integración con la base de datos de productos y pedidos para proporcionar respuestas contextualizadas y personalizadas. El chatbot logró reducir en un 40% las consultas al equipo de soporte humano y mejoró la satisfacción del cliente en un 35% según encuestas posteriores a la implementación."

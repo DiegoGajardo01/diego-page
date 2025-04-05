@@ -6,12 +6,14 @@
     font-family: 'Inter', sans-serif;
 }
 
+/* Estilos de cuerpo */
 body {
     background-color: #0F0F0F;
     color: #ffffff;
     line-height: 1.6;
 }
 
+/* Contenedor principal */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -29,8 +31,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     background-color: #1A1A1A;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 0 20px;
     border-radius: 15px;
 }
 
@@ -115,7 +116,6 @@ nav {
 }
 
 /* Sección de Proyectos */
-/* Estilos para el carrusel de proyectos */
 .projects {
     padding: 100px 0;
     position: relative;
@@ -182,7 +182,6 @@ nav {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 20px;
 }
 
 .tech-tag {
@@ -508,84 +507,6 @@ footer {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Responsive */
-@media (max-width: 992px) {
-    .hero-container {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .hero-text, .hero-image {
-        width: 100%;
-    }
-    
-    .hero-text p {
-        margin: 0 auto 30px;
-    }
-    
-    .hero-image {
-        margin-top: 40px;
-        max-width: 400px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    
-    .projects-carousel {
-        overflow-x: auto;
-        padding-bottom: 20px;
-    }
-    
-    .project-card {
-        flex: 0 0 calc(50% - 20px);
-    }
-}
-
-@media (max-width: 768px) {
-    .project-card {
-        flex: 0 0 calc(100% - 20px);
-    }
-    
-    .testimonial {
-        flex-direction: column;
-    }
-    
-    .testimonial-text, .testimonial-card {
-        width: 100%;
-    }
-    
-    .testimonial-card {
-        margin-top: 30px;
-    }
-    
-    .footer-content {
-        flex-direction: column;
-        gap: 20px;
-    }
-}
-
-/* Menú hamburguesa para móviles */
-.menu-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
-    cursor: pointer;
-}
-
-.menu-toggle span {
-    height: 3px;
-    width: 100%;
-    background-color: #ffffff;
-    border-radius: 3px;
-    transition: all 0.3s ease;
-}
-
-/* Clases para activar menú */
-.nav-links.active {
-    display: flex;
-}
-
 /* Ajustes de responsive más específicos */
 @media (max-width: 768px) {
     .container {
@@ -689,4 +610,27 @@ footer {
         height: auto;
         min-height: 300px;
     }
+}
+
+/* Menú hamburguesa para móviles */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+}
+
+.menu-toggle span {
+    height: 3px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Clases para activar menú */
+.nav-links.active {
+    display: flex;
 }

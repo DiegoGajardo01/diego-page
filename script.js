@@ -121,6 +121,18 @@ function goToSlide(index) {
     updateArrowsState(totalPages);
 }
 
+// Función para cerrar el menú y el modal
+function closeMenuAndModal() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const menuOverlay = document.querySelector('.menu-overlay');
+    
+    menuToggle.classList.remove('active');
+    navLinks.classList.remove('active');
+    menuOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
 // Función para abrir el modal de proyecto
 function openProjectModal(project) {
     const modal = document.getElementById('projectModal');
@@ -180,23 +192,13 @@ function setupMenuToggle() {
     }
     
     if (menuOverlay) {
-        menuOverlay.addEventListener('click', function() {
-            menuToggle.classList.remove('active');
-            navLinks.classList.remove('active');
-            menuOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
+        menuOverlay.addEventListener('click', closeMenuAndModal);
     }
     
     // Cerrar el menú al hacer clic en un enlace
     const navLinkElements = document.querySelectorAll('.nav-links a');
     navLinkElements.forEach(link => {
-        link.addEventListener('click', function() {
-            menuToggle.classList.remove('active');
-            navLinks.classList.remove('active');
-            menuOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
+        link.addEventListener('click', closeMenuAndModal);
     });
 }
 

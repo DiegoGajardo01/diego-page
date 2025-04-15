@@ -63,13 +63,13 @@ nav {
 }
 
 .hero-container {
-    display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
 }
 
 .hero-text {
-    width: 55%;
+    width: 100%;
+    text-align: center;
 }
 
 .hero-text h1 {
@@ -86,7 +86,7 @@ nav {
 }
 
 .hero-image {
-    width: 40%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -134,28 +134,17 @@ nav {
 
 .projects-carousel {
     display: flex;
-    gap: 20px;
-    width: 100%;
-    overflow-x: hidden; /* Cambiado a hidden para controlar scroll */
-    padding: 20px 0;
-    scroll-behavior: smooth; /* Para scroll suave */
-    -ms-overflow-style: none; /* Ocultar scrollbar en IE y Edge */
-    scrollbar-width: none; /* Ocultar scrollbar en Firefox */
-}
-
-/* Ocultar scrollbar en Chrome y Safari */
-.projects-carousel::-webkit-scrollbar {
-    display: none;
+    gap: 10px;
 }
 
 .project-card {
-    flex: 0 0 calc(33.33% - 20px);
+    flex: 0 0 calc(100% - 10px);
     background-color: #1A1A1A;
     border-radius: 8px;
     padding: 25px;
     transition: all 0.3s ease;
     cursor: pointer;
-    height: 350px;
+    height: auto;
     display: flex;
     flex-direction: column;
     user-select: none; /* Prevenir selección de texto al arrastrar */
@@ -234,19 +223,13 @@ nav {
 
 /* Flechas de navegación */
 .carousel-arrows {
-    display: flex;
-    justify-content: space-between;
-    position: absolute;
-    top: 50%;
-    left: -30px;
-    right: -30px;
-    transform: translateY(-50%);
-    z-index: 10;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .carousel-arrow {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     background-color: rgba(255, 255, 255, 0.8);
     color: #0F0F0F;
     border-radius: 50%;
@@ -289,7 +272,7 @@ nav {
 
 @media (max-width: 768px) {
     .project-card {
-        flex: 0 0 calc(100% - 20px);
+        flex: 0 0 calc(100% - 10px);
     }
     
     .carousel-arrows {
@@ -614,12 +597,8 @@ footer {
 
 /* Menú hamburguesa para móviles */
 .menu-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
-    cursor: pointer;
+    display: flex;
+    z-index: 101;
 }
 
 .menu-toggle span {

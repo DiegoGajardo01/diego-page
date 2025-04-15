@@ -47,15 +47,15 @@ function initProjectsCarousel() {
         carousel.appendChild(projectCard);
     });
      // Agregar eventos de clic a las flechas
-    const prevButton = document.getElementById('prevButton');
-    const nextButton = document.getElementById('nextButton');
- 
-    prevButton.addEventListener('click', () => {
-        goToSlide(currentSlide - 1);
+     const prevButton = document.getElementById('prevButton');
+     const nextButton = document.getElementById('nextButton');
+     
+     prevButton.addEventListener('click', () => {
+         goToSlide(currentSlide - 1);
      });
- 
-    nextButton.addEventListener('click', () => {
-        goToSlide(currentSlide + 1);
+     
+     nextButton.addEventListener('click', () => {
+         goToSlide(currentSlide + 1);
      });
     // Crear dots de navegación
     const totalPages = Math.ceil(projects.length / currentProjectsPerView);

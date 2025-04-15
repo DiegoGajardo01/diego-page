@@ -3,21 +3,20 @@ import { projects } from './projects.js';
 
 // Variables para el carrusel
 let currentSlide = 0;
-const projectsPerView = window.innerWidth > 992 ? 3 : window.innerWidth > 768 ? 2 : 1;
+const projectsPerView = window.innerWidth > 992 ? 3 : 1; // Cambiar a 1 en móvil
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
     initProjectsCarousel();
     setupMenuToggle();
+    setupArrowNavigation(); // Añadido para conectar las flechas
+    setupDragScroll(); // Añadido para activar el scroll por arrastre
 });
 
 // Funciones de inicialización
 function initProjectsCarousel() {
     const carousel = document.getElementById('projectsCarousel');
     const dotsContainer = document.getElementById('carouselDots');
-    
-    // Actualizar projectsPerView basado en el ancho actual
-    const currentProjectsPerView = window.innerWidth > 992 ? 3 : window.innerWidth > 768 ? 2 : 1;
     
     // Limpiar contenedores por si ya tienen elementos
     carousel.innerHTML = '';
@@ -46,19 +45,9 @@ function initProjectsCarousel() {
         // Añadir card al carrusel
         carousel.appendChild(projectCard);
     });
-     // Agregar eventos de clic a las flechas
-     const prevButton = document.getElementById('prevButton');
-     const nextButton = document.getElementById('nextButton');
-     
-     prevButton.addEventListener('click', () => {
-         goToSlide(currentSlide - 1);
-     });
-     
-     nextButton.addEventListener('click', () => {
-         goToSlide(currentSlide + 1);
-     });
+
     // Crear dots de navegación
-    const totalPages = Math.ceil(projects.length / currentProjectsPerView);
+    const totalPages = Math.ceil(projects.length / projectsPerView);
     for (let i = 0; i < totalPages; i++) {
         const dot = document.createElement('div');
         dot.className = 'dot';
@@ -70,11 +59,27 @@ function initProjectsCarousel() {
         dotsContainer.appendChild(dot);
     }
     
-    // Configurar desplazamiento manual
-    setupDragScroll();
-    
     // Mostrar el slide inicial
     goToSlide(0);
+}
+
+// Configurar navegación por flechas
+function setupArrowNavigation() {
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+    
+    // Evento para ir al slide anterior
+    prevButton.addEventListener('click', () => {
+        goToSlide(currentSlide - 1);
+    });
+    
+    // Evento para ir al siguiente slide
+    nextButton.addEventListener('click', () => {
+        goToSlide(currentSlide + 1);
+    });
+    
+    // Actualizar estado inicial de flechas
+    updateArrowsState(Math.ceil(projects.length / projectsPerView));
 }
 
 // Función para ir a un slide específico
@@ -83,12 +88,8 @@ function goToSlide(index) {
     const dots = document.querySelectorAll('.dot');
     const cards = carousel.querySelectorAll('.project-card');
     
-    // Actualizar projectsPerView basado en el ancho actual de la ventana
-    const currentProjectsPerView = window.innerWidth > 992 ? 3 : window.innerWidth > 768 ? 2 : 1;
-        
-    const totalPages = Math.ceil(projects.length / currentProjectsPerView);
-    
     // Validar el índice para que esté dentro de los límites
+    const totalPages = Math.ceil(projects.length / projectsPerView);
     if (index < 0) index = 0;
     if (index >= totalPages) index = totalPages - 1;
     
@@ -99,8 +100,14 @@ function goToSlide(index) {
     const cardWidth = cards[0].offsetWidth;
     const gap = parseInt(window.getComputedStyle(carousel).gap) || 20;
     
-    // En móviles, necesitamos mover tarjetas individuales, no grupos
-    const scrollPosition = index * (cardWidth + gap) * currentProjectsPerView;
+    let scrollPosition;
+    if (window.innerWidth <= 992) {
+        // En móviles, mover una tarjeta a la vez
+        scrollPosition = index * (cardWidth + gap);
+    } else {
+        // En desktop, mover grupos de tarjetas
+        scrollPosition = index * (cardWidth + gap) * projectsPerView;
+    }
     
     // Aplicar scroll
     carousel.scrollTo({
@@ -133,7 +140,6 @@ function closeMenuAndModal() {
     document.body.style.overflow = '';
 }
 
-// Función para abrir el modal de proyecto
 function openProjectModal(project) {
     const modal = document.getElementById('projectModal');
     
@@ -159,14 +165,20 @@ function openProjectModal(project) {
     const demoLink = document.getElementById('modalDemo');
     const repoLink = document.getElementById('modalRepo');
     
-    demoLink.href = project.demoLink;
-    repoLink.href = project.repoLink;
+    demoLink.href = project.demoLink || '#';
+    repoLink.href = project.repoLink || '#';
     
     // Mostrar modal
     modal.style.display = 'block';
     
     // Prevenir scroll del body
     document.body.style.overflow = 'hidden';
+    
+    // Eliminar cualquier elemento extraño que pueda haberse generado
+    const errorElement = document.querySelector('.x-close-modal');
+    if (errorElement) {
+        errorElement.remove();
+    }
 }
 
 // Función para cerrar el modal
@@ -305,9 +317,17 @@ function snapToNearestCard() {
     const gap = parseInt(window.getComputedStyle(carousel).gap) || 20;
     const totalWidth = cardWidth + gap;
     
-    // Calcular el índice más cercano
+    // Calcular el índice más cercano basado en el scroll actual
     const scrollPosition = carousel.scrollLeft;
-    const nearestIndex = Math.round(scrollPosition / totalWidth / projectsPerView);
+    let nearestIndex;
+    
+    if (window.innerWidth <= 992) {
+        // En móvil, una tarjeta a la vez
+        nearestIndex = Math.round(scrollPosition / totalWidth);
+    } else {
+        // En desktop, múltiples tarjetas
+        nearestIndex = Math.round(scrollPosition / totalWidth / projectsPerView);
+    }
     
     // Ir al slide más cercano
     goToSlide(nearestIndex);
@@ -317,22 +337,24 @@ function snapToNearestCard() {
 window.addEventListener('resize', () => {
     // Reinicializar el carrusel para que se adapte al nuevo tamaño
     initProjectsCarousel();
+    updateArrowsState(Math.ceil(projects.length / projectsPerView));
 });
 
-// Evento para cerrar modal con la X
-document.querySelector('.close-modal').addEventListener('click', closeProjectModal);
-
-// Evento para cerrar modal con click fuera
-window.addEventListener('click', (event) => {
-    const modal = document.getElementById('projectModal');
-    if (event.target === modal) {
-        closeProjectModal();
-    }
-});
-
-// Inicializar carrusel cuando el DOM esté cargado
+// Eventos para modal
 document.addEventListener('DOMContentLoaded', () => {
-    initProjectsCarousel();
+    // Evento para cerrar modal con la X
+    const closeModalBtn = document.querySelector('.close-modal');
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeProjectModal);
+    }
+    
+    // Evento para cerrar modal con click fuera
+    window.addEventListener('click', (event) => {
+        const modal = document.getElementById('projectModal');
+        if (event.target === modal) {
+            closeProjectModal();
+        }
+    });
 });
 
 // Función para actualizar el estado de las flechas
@@ -342,15 +364,19 @@ function updateArrowsState(totalPages) {
 
     // Deshabilitar la flecha anterior si estamos en la primera diapositiva
     if (currentSlide === 0) {
-        prevButton.disabled = true; // O puedes ocultar el botón
+        prevButton.classList.add('disabled');
+        prevButton.setAttribute('disabled', true);
     } else {
-        prevButton.disabled = false; // Habilitar el botón
+        prevButton.classList.remove('disabled');
+        prevButton.removeAttribute('disabled');
     }
 
     // Deshabilitar la flecha siguiente si estamos en la última diapositiva
     if (currentSlide >= totalPages - 1) {
-        nextButton.disabled = true; // O puedes ocultar el botón
+        nextButton.classList.add('disabled');
+        nextButton.setAttribute('disabled', true);
     } else {
-        nextButton.disabled = false; // Habilitar el botón
+        nextButton.classList.remove('disabled');
+        nextButton.removeAttribute('disabled');
     }
 }

@@ -1,4 +1,3 @@
-/* Reset y estilos generales */
 * {
     margin: 0;
     padding: 0;
@@ -33,6 +32,7 @@ nav {
     background-color: #1A1A1A;
     padding: 0 20px;
     border-radius: 15px;
+    position: relative; /* Asegura que sea el contenedor para posicionar elementos */
 }
 
 .logo {
@@ -57,36 +57,44 @@ nav {
     opacity: 0.7;
 }
 
+/* Menú hamburguesa */
+.menu-toggle {
+    display: none; /* Oculto por defecto en desktop */
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+    z-index: 101;
+}
+
+.menu-toggle span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
 /* Sección de Hero */
 .hero {
     padding: 80px 0;
 }
 
 .hero-container {
-    flex-direction: column;
-    align-items: center;
+    display: flex; /* Cambiar a flex para mejor control */
+    flex-direction: row; /* Mantener en fila en escritorio */
+    align-items: center; /* Alinear verticalmente */
 }
 
 .hero-text {
-    width: 100%;
-    text-align: center;
-}
-
-.hero-text h1 {
-    font-size: 48px;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
-.hero-text p {
-    font-size: 18px;
-    margin-bottom: 30px;
-    opacity: 0.8;
-    max-width: 500px;
+    width: 50%; /* Ocupa la mitad en escritorio */
+    text-align: left; /* Alinear a la izquierda */
 }
 
 .hero-image {
-    width: 100%;
+    width: 50%; /* Ocupa la mitad en escritorio */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -130,21 +138,27 @@ nav {
     position: relative;
     height: auto;
     margin-bottom: 80px; /* Espacio para los controles */
+    display: flex;
+    flex-direction: column; /* Asegurarse de que los elementos se apilen */
+    align-items: center; /* Centrar los elementos */
 }
 
 .projects-carousel {
     display: flex;
     gap: 10px;
+    overflow: hidden; /* Ocultar el desbordamiento */
+    width: 100%; /* Asegurar que ocupe todo el ancho disponible */
 }
 
 .project-card {
-    flex: 0 0 calc(100% - 10px);
+    flex: 0 0 calc(33.33% - 10px); /* Tres tarjetas en escritorio */
     background-color: #1A1A1A;
     border-radius: 8px;
     padding: 25px;
     transition: all 0.3s ease;
     cursor: pointer;
     height: auto;
+    min-height: 350px; /* Altura mínima para consistencia */
     display: flex;
     flex-direction: column;
     user-select: none; /* Prevenir selección de texto al arrastrar */
@@ -223,12 +237,19 @@ nav {
 
 /* Flechas de navegación */
 .carousel-arrows {
-    justify-content: center;
-    margin-top: 20px;
+    display: flex; /* Añadido para asegurar que sea un elemento flex */
+    justify-content: center; /* Centrar las flechas */
+    gap: 20px; /* Espacio entre flechas */
+    margin-top: 20px; /* Espacio adicional en la parte superior */
+    width: 100%; /* Asegurar que ocupe todo el espacio disponible */
+    position: absolute; /* Posicionar absolutamente */
+    top: 50%; /* Centrar verticalmente */
+    transform: translateY(-50%); /* Ajuste fino vertical */
+    pointer-events: none; /* No interferir con el carrusel */
 }
 
 .carousel-arrow {
-    width: 35px;
+    width: 35px; /* Ajustar el tamaño de las flechas */
     height: 35px;
     background-color: rgba(255, 255, 255, 0.8);
     color: #0F0F0F;
@@ -241,6 +262,16 @@ nav {
     font-size: 18px;
     font-weight: bold;
     user-select: none;
+    pointer-events: auto; /* Permitir interacción */
+    position: absolute; /* Posicionar absolutamente */
+}
+
+.carousel-arrow-prev {
+    left: 10px; /* Posicionar a la izquierda */
+}
+
+.carousel-arrow-next {
+    right: 10px; /* Posicionar a la derecha */
 }
 
 .carousel-arrow:hover {
@@ -248,6 +279,7 @@ nav {
     transform: scale(1.1);
 }
 
+.carousel-arrow:disabled,
 .carousel-arrow.disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -261,248 +293,18 @@ nav {
 /* Responsive */
 @media (max-width: 992px) {
     .project-card {
-        flex: 0 0 calc(50% - 20px);
-    }
-    
-    .carousel-arrows {
-        left: -15px;
-        right: -15px;
+        flex: 0 0 calc(100% - 10px); /* Una tarjeta en móvil */
     }
 }
 
 @media (max-width: 768px) {
-    .project-card {
-        flex: 0 0 calc(100% - 10px);
-    }
-    
-    .carousel-arrows {
-        left: -10px;
-        right: -10px;
-    }
-    
-    .carousel-arrow {
-        width: 35px;
-        height: 35px;
-    }
-}
-
-/* Sección de Skills */
-.skills {
-    padding: 100px 0;
-}
-
-.skills h2 {
-    font-size: 36px;
-    margin-bottom: 50px;
-}
-
-.skills-description {
-    margin-bottom: 40px;
-    max-width: 600px;
-    opacity: 0.8;
-}
-
-.skill-bar-container {
-    margin-bottom: 30px;
-}
-
-.skill-bar-label {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.skill-bar {
-    height: 6px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.skill-bar-fill {
-    height: 100%;
-    background-color: #ffffff;
-    transition: width 1s ease;
-}
-
-/* Sección de Contacto */
-.contact {
-    padding: 100px 0;
-    background-color: #1A1A1A;
-    border-radius: 12px;
-    margin-bottom: 100px;
-    text-align: center;
-}
-
-.contact h2 {
-    font-size: 32px;
-    margin-bottom: 20px;
-}
-
-.contact p {
-    max-width: 600px;
-    margin: 0 auto 30px;
-    opacity: 0.8;
-}
-
-/* Cliente destacado */
-.testimonial {
-    padding: 50px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.testimonial-text {
-    width: 60%;
-}
-
-.testimonial-text h3 {
-    font-size: 24px;
-    margin-bottom: 30px;
-}
-
-.testimonial-card {
-    width: 35%;
-    background-color: #1A1A1A;
-    border-radius: 8px;
-    padding: 25px;
-}
-
-.testimonial-author {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.testimonial-author img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-/* Footer */
-footer {
-    padding: 50px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.footer-info p {
-    opacity: 0.6;
-    font-size: 14px;
-}
-
-.footer-links {
-    display: flex;
-    gap: 20px;
-}
-
-.footer-links a {
-    opacity: 0.6;
-    transition: opacity 0.3s;
-}
-
-.footer-links a:hover {
-    opacity: 1;
-}
-
-/* Ventana modal para proyectos */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    z-index: 1000;
-    overflow-y: auto;
-}
-
-.modal-content {
-    background-color: #1A1A1A;
-    margin: 50px auto;
-    padding: 40px;
-    max-width: 800px;
-    border-radius: 8px;
-    position: relative;
-}
-
-.close-modal {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 30px;
-    color: #ffffff;
-    cursor: pointer;
-}
-
-.modal-header {
-    margin-bottom: 30px;
-}
-
-.modal-header h3 {
-    font-size: 28px;
-    margin-bottom: 10px;
-}
-
-.modal-body img {
-    width: 100%;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.modal-tech {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.modal-description {
-    margin-bottom: 30px;
-    line-height: 1.8;
-}
-
-.modal-links {
-    display: flex;
-    gap: 20px;
-}
-
-.modal-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 30px;
-    transition: background-color 0.3s;
-}
-
-.modal-link:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Ajustes de responsive más específicos */
-@media (max-width: 768px) {
-    .container {
-        padding: 0 15px;
-    }
-
+    /* Menú hamburguesa */
     .menu-toggle {
-        display: flex;
-        z-index: 101;
+        display: flex; /* Mostrar en móvil */
     }
     
     .nav-links {
-        display: none;
+        display: none; /* Ocultar por defecto en móvil */
         position: fixed;
         flex-direction: column;
         top: 0;
@@ -515,6 +317,10 @@ footer {
         justify-content: flex-start;
         gap: 30px;
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .nav-links.active {
+        display: flex; /* Mostrar cuando está activo */
     }
     
     /* Estilo de transformación para el menú hamburguesa activo */
@@ -530,32 +336,39 @@ footer {
         transform: translateY(-9px) rotate(-45deg);
     }
 
-    /* Centrado en responsive */
-    .hero-text h1, .hero-text p {
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
+    .project-card {
+        flex: 0 0 calc(100% - 10px); /* Una tarjeta en móvil */
+    }
+    
+    .carousel-arrows {
+        position: relative; /* En móvil, posición relativa */
+        transform: none; /* Eliminar transformación */
+        top: auto; /* Reset posición */
+        margin-top: 20px; /* Espacio superior */
+    }
+    
+    .carousel-arrow {
+        position: static; /* Reset posición en móvil */
+        margin: 0 10px; /* Añadir margen para separación */
     }
 
     .hero-container {
+        flex-direction: column; /* Cambiar a columna en móviles */
+        align-items: center; /* Centrar el contenido */
+        text-align: center; /* Centrar texto */
+    }
+
+    .hero-text {
+        width: 100%; /* Asegurarse de que ocupe el ancho completo */
+        text-align: center; /* Centrar el texto */
+        margin-bottom: 30px; /* Añadir espacio entre texto e imagen */
+    }
+
+    .hero-image {
+        width: 100%; /* Asegurarse de que ocupe el ancho completo */
+        display: flex;
         justify-content: center;
         align-items: center;
-    }
-
-    /* Ajustes para el carrusel en móviles */
-    .carousel-arrows {
-        position: relative;
-        left: 0;
-        right: 0;
-        top: 0;
-        transform: none;
-        justify-content: center;
-        gap: 20px;
-        margin-top: 20px;
-    }
-
-    .carousel-arrow {
-        position: static;
     }
     
     /* Overlay para cerrar menú al tocar fuera */
@@ -573,6 +386,75 @@ footer {
     .menu-overlay.active {
         display: block;
     }
+
+
+/* Actualización para la sección de Testimonial en versión móvil */
+@media (max-width: 768px) {
+    .testimonial .container {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .testimonial-text {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .testimonial-text h3 {
+        font-size: 24px;
+        line-height: 1.4;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .testimonial-card {
+        width: 100%;
+        max-width: 90%;
+        margin: 0 auto;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .testimonial-card p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .testimonial-author {
+        text-align: center;
+        justify-content: center;
+        display: flex;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .contact-button {
+        margin: 0 auto 30px;
+        display: inline-block;
+    }
+}
+
+/* Ajustes adicionales para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .testimonial-text h3 {
+        font-size: 22px;
+    }
+    
+    .testimonial-card {
+        padding: 25px;
+        max-width: 95%;
+    }
+    
+    .testimonial-card p {
+        font-size: 14px;
+    }
+}
+    
 }
 
 /* Nuevos arreglos para vista móvil más pequeña */
@@ -593,23 +475,225 @@ footer {
         height: auto;
         min-height: 300px;
     }
+    
+    .modal-content {
+        padding: 20px; /* Reducir padding en móviles pequeños */
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
 }
 
-/* Menú hamburguesa para móviles */
-.menu-toggle {
-    display: flex;
-    z-index: 101;
+/* Sección de Habilidades */
+.skills {
+    padding: 100px 0;
+    background-color: #1A1A1A;
 }
 
-.menu-toggle span {
-    height: 3px;
+.skills h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.skills-description {
+    margin-bottom: 50px;
+    max-width: 800px;
+    opacity: 0.8;
+}
+
+.skill-bar-container {
+    margin-bottom: 25px;
     width: 100%;
-    background-color: #ffffff;
-    border-radius: 3px;
-    transition: all 0.3s ease;
 }
 
-/* Clases para activar menú */
-.nav-links.active {
+.skill-bar-label {
     display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.skill-bar {
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.skill-bar-fill {
+    height: 100%;
+    background-color: #ffffff;
+    border-radius: 5px;
+    transition: width 1s ease-in-out;
+}
+
+/* Sección de Testimonial */
+.testimonial {
+    padding: 100px 0;
+    background-color: #0F0F0F;
+    text-align: center;
+}
+
+.testimonial .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.testimonial-text {
+    width: 100%;
+}
+
+.testimonial-text h3 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.testimonial-card {
+    background-color: #1A1A1A;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+}
+
+.testimonial-card p {
+    font-size: 16px;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.testimonial-author {
+    font-weight: 600;
+}
+
+/* Estilos para el modal de proyectos */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+    background-color: #1A1A1A;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 900px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    opacity: 0.7;
+}
+
+.modal-header {
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    font-size: 24px;
+}
+
+.modal-body img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.modal-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-description {
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.modal-links {
+    display: flex;
+    gap: 20px;
+}
+
+.modal-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #ffffff;
+    transition: opacity 0.3s;
+}
+
+.modal-link:hover {
+    opacity: 0.7;
+}
+
+/* Estilos para la sección de contacto */
+.contact {
+    padding: 100px 0;
+    text-align: center;
+}
+
+.contact h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.contact p {
+    max-width: 600px;
+    margin: 0 auto 40px;
+    opacity: 0.8;
+}
+
+/* Estilos para el footer */
+footer {
+    padding: 40px 0;
+    background-color: #1A1A1A;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-info p {
+    opacity: 0.7;
+    font-size: 14px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-links a {
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.footer-links a:hover {
+    opacity: 1;
 }

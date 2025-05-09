@@ -490,47 +490,114 @@ nav {
     }
 }
 
-/* Sección de Habilidades */
+
+/* Sección de skills */
 .skills {
     padding: 100px 0;
-    background-color: #1A1A1A;
+    background-color: #000000;
 }
 
 .skills h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
+    font-size: 36px; /* Mismo tamaño de título que otras secciones */
 }
 
-.skills-description {
-    margin-bottom: 50px;
-    max-width: 800px;
-    opacity: 0.8;
+.skills p {
+    max-width: 700px; /* Limitar el ancho del texto para mejor legibilidad */
+    margin: 0 0 60px; /* Centrado y con margen inferior */
+    opacity: 0.8; /* Consistente con otros párrafos descriptivos */
+    font-size: 16px; /* Tamaño coherente con otros párrafos */
+    line-height: 1.6; /* Mejor legibilidad */
 }
 
-.skill-bar-container {
-    margin-bottom: 25px;
-    width: 100%;
+.skills-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px; /* Mantener consistencia con otras secciones */
 }
 
-.skill-bar-label {
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 columnas en desktop */
+    gap: 30px; /* Espaciado entre elementos */
+}
+
+.tool {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
+    justify-content: center;
+}
+
+.tool-container {
+    background-color: #1A1A1A; /* Consistente con los project-card */
+    border-radius: 8px; /* Consistente con otros elementos */
+    padding: 25px; /* Consistente con project-card */
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra similar a otros elementos */
+    width: 100%;
+    height: 140px; /* Altura fija para mantener consistencia */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease; /* Misma transición que project-card */
+}
+
+.tool-container:hover {
+    transform: translateY(-5px); /* Mismo efecto hover que project-card */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.tool img {
+    width: 60px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.tool span {
+    color: #ffffff;
     font-size: 14px;
+    font-weight: 600;
 }
 
-.skill-bar {
-    height: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    overflow: hidden;
+/* Responsive para la sección skills */
+@media (max-width: 992px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 columnas en tablets */
+    }
 }
 
-.skill-bar-fill {
-    height: 100%;
-    background-color: #ffffff;
-    border-radius: 5px;
-    transition: width 1s ease-in-out;
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en móviles */
+        gap: 20px;
+    }
+    
+    .tool-container {
+        height: 120px;
+    }
+    
+    .tool img {
+        width: 50px;
+    }
+}
+
+@media (max-width: 430px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr); /* Mantiene 2 columnas en móviles pequeños */
+    }
+    
+    .tool-container {
+        height: 100px;
+        padding: 15px;
+    }
+    
+    .tool img {
+        width: 40px;
+        margin-bottom: 10px;
+    }
+    
+    .tool span {
+        font-size: 12px;
+    }
 }
 
 /* Sección de Testimonial */

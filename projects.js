@@ -38,14 +38,14 @@ export const projects = [
         tech: ["Python", "TensorFlow", "CNNs", "Computer Vision", "NumPy"],
         demoLink: "#",
         repoLink: "#",
-        fullDescription: "Desarrollo de un sistema de clasificación automática de imágenes de productos utilizando Redes Neuronales Convolucionales (CNN). El modelo fue entrenado con más de 50,000 imágenes etiquetadas distribuidas en 15 categorías de productos. Se alcanzó una precisión del 94% en la clasificación, permitiendo automatizar el proceso de catalogación en un marketplace. El sistema incluye una API REST para su integración con otros servicios y una interfaz web simple para cargar y clasificar imágenes manualmente."
+        fullDescription: "Desarrollo de un sistema de clasificación automática de imágenes de productos utilizando Redes Neuronales Convolucionales (CNN). El modelo fue entrenado con más de 50,000 imágenes etiquetadas distribuidas en 15 categorías de productos. Se alcanzó una precisión del 89% en la clasificación, permitiendo automatizar el proceso de catalogación en un marketplace. El sistema incluye una API REST para su integración con otros servicios y una interfaz web simple para cargar y clasificar imágenes manualmente."
     },
     {
         id: 5,
         title: "Aplicación Mobile CRUD",
-        description: "Desarrollo de aplicación móvil con funcionalidades CRUD, utilizando Kotlin para Android con arquitectura MVVM y conexión a API REST.",
+        description: "Desarrollo de aplicación móvil con funcionalidades CRUD, utilizando Kotlin para Android con arquitectura MVVM.",
         image: "/api/placeholder/500/300",
-        tech: ["Kotlin", "Android", "MVVM", "API REST", "SQLite"],
+        tech: ["Kotlin", "Android", "MVVM", "SQLite"],
         demoLink: "#",
         repoLink: "#", 
         fullDescription: "Aplicación móvil para Android desarrollada en Kotlin que permite la gestión completa de inventarios para pequeños negocios. Implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) utilizando arquitectura MVVM para separación de responsabilidades. La aplicación cuenta con sincronización offline mediante SQLite y sincronización con backend cuando se recupera la conexión. Incluye funcionalidades como escaneo de códigos de barras, búsqueda avanzada y generación de reportes básicos de inventario."
@@ -53,11 +53,11 @@ export const projects = [
     {
         id: 6,
         title: "Clone de YouTube",
-        description: "Aplicación móvil que replica las funcionalidades principales de YouTube, desarrollada en Dart con Flutter para múltiples plataformas.",
+        description: "Aplicación móvil que replica YouTube, desarrollada en Dart con Flutter para múltiples plataformas.",
         image: "/api/placeholder/500/300",
-        tech: ["Dart", "Flutter", "Firebase", "API REST"],
+        tech: ["Dart", "Flutter"],
         demoLink: "#",
         repoLink: "#", 
-        fullDescription: "Desarrollo de una aplicación cross-platform que replica las principales funcionalidades de YouTube utilizando Flutter y Dart. El proyecto implementa reproducción de videos, sistema de comentarios, likes, suscripciones a canales y recomendaciones personalizadas."
+        fullDescription: "Desarrollo de una aplicación cross-platform que replica a YouTube utilizando Flutter y Dart."
     }
 ];

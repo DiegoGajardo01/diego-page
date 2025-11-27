@@ -47,8 +47,8 @@ export default function Header() {
             <Link href="#projects" onClick={closeMenu} aria-label="Ir a Proyectos">
               Proyectos
             </Link>
-            <Link href="#skills" onClick={closeMenu} aria-label="Ir a Habilidades">
-              Habilidades
+            <Link href="#skills" onClick={closeMenu} aria-label="Ir a Herramientas">
+              Herramientas
             </Link>
             <Link href="#contact" onClick={closeMenu} aria-label="Ir a Contacto">
               Contacto

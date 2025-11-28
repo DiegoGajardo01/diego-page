@@ -66,7 +66,8 @@ export default function ContactForm() {
         <p>Estoy disponible para colaborar en proyectos de desarrollo, análisis de datos y soluciones de BI. Completa el formulario y te responderé en menos de 24 horas.</p>
         
         <div className="contact-wrapper">
-          <form className="contact-form" onSubmit={handleSubmit}>
+          <div className="contact-form-card">
+            <form className="contact-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="name">Nombre *</label>
               <input
@@ -162,6 +163,7 @@ export default function ContactForm() {
               <p className="form-error">{errorMessage}</p>
             )}
           </form>
+          </div>
           
           <div className="contact-info">
             <h3>O contáctame directamente</h3>

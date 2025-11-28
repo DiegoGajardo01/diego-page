@@ -19,12 +19,19 @@ Portafolio personal de Diego Gajardo, desarrollado con Next.js 14, React y TypeS
 npm install
 ```
 
-2. Ejecuta el servidor de desarrollo:
+2. Configura las variables de entorno:
+Crea un archivo `.env.local` en la raíz del proyecto con:
+```env
+NEXT_PUBLIC_SUPABASE_URL=tu_url_de_supabase
+SUPABASE_SERVICE_ROLE_KEY=tu_service_role_key
+```
+
+3. Ejecuta el servidor de desarrollo:
 ```bash
 npm run dev
 ```
 
-3. Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+4. Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
 ## 🛠️ Scripts Disponibles
 
@@ -38,22 +45,49 @@ npm run dev
 ```
 DiegoWeb/
 ├── app/
-│   ├── layout.tsx      # Layout principal con metadata
-│   ├── page.tsx        # Página principal
-│   └── globals.css     # Estilos globales
+│   ├── api/
+│   │   └── contact/
+│   │       └── route.ts    # API endpoint para formulario de contacto
+│   ├── layout.tsx          # Layout principal con metadata
+│   ├── page.tsx           # Página principal
+│   └── globals.css        # Estilos globales
 ├── components/
-│   ├── Header.tsx       # Componente de navegación
-│   ├── Hero.tsx        # Sección hero
-│   ├── Projects.tsx    # Carrusel de proyectos
-│   ├── ProjectModal.tsx # Modal de detalles
-│   ├── Skills.tsx      # Sección de herramientas
-│   ├── Contact.tsx     # Sección de contacto
-│   ├── Testimonial.tsx # Testimonios
-│   └── Footer.tsx      # Footer
+│   ├── Header.tsx         # Componente de navegación
+│   ├── Hero.tsx           # Sección hero
+│   ├── About.tsx          # Sección sobre mí
+│   ├── Services.tsx       # Sección de servicios
+│   ├── Projects.tsx       # Carrusel de proyectos
+│   ├── ProjectModal.tsx   # Modal de detalles
+│   ├── Process.tsx        # Proceso de trabajo
+│   ├── Skills.tsx         # Sección de herramientas
+│   ├── Testimonials.tsx   # Testimonios
+│   ├── ContactForm.tsx    # Formulario de contacto
+│   └── Footer.tsx         # Footer
 ├── lib/
-│   └── projects.ts     # Datos de proyectos
+│   ├── projects.ts        # Datos de proyectos
+│   ├── supabase.ts        # Cliente de Supabase
+│   └── rate-limit.ts      # Rate limiting para API
 └── public/
-    └── media/          # Imágenes y assets
+    └── media/             # Imágenes y assets
+```
+
+## 🗄️ Configuración de Base de Datos
+
+El formulario de contacto requiere una tabla en Supabase con la siguiente estructura:
+
+```sql
+CREATE TABLE contact_submissions (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  phone VARCHAR(50),
+  company VARCHAR(255),
+  service VARCHAR(100),
+  message TEXT NOT NULL,
+  reviewed BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
 ```
 
 ## 🎨 Personalización

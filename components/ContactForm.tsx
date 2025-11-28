@@ -6,12 +6,14 @@ export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     company: '',
     message: '',
     service: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -25,17 +27,36 @@ export default function ContactForm() {
     setIsSubmitting(true)
     setSubmitStatus('idle')
 
-    // Aquí puedes integrar con un servicio de email o API
-    // Por ahora, usamos mailto como fallback
-    const mailtoLink = `mailto:contacto@diegogajardo.com?subject=Solicitud de contacto desde portafolio&body=Nombre: ${formData.name}%0AEmail: ${formData.email}%0AEmpresa: ${formData.company}%0AServicio de interés: ${formData.service}%0A%0AMensaje:%0A${formData.message}`
-    
-    window.location.href = mailtoLink
-    
-    setTimeout(() => {
-      setIsSubmitting(false)
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        console.error('API Error:', data)
+        const errorMsg = data.error || 'Error al enviar el mensaje'
+        setErrorMessage(errorMsg)
+        throw new Error(errorMsg)
+      }
+
       setSubmitStatus('success')
-      setFormData({ name: '', email: '', company: '', message: '', service: '' })
-    }, 1000)
+      setErrorMessage('')
+      setFormData({ name: '', email: '', phone: '', company: '', message: '', service: '' })
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setSubmitStatus('error')
+      if (!errorMessage) {
+        setErrorMessage('Hubo un error al enviar el mensaje. Por favor, intenta nuevamente o contáctame directamente por email.')
+      }
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -69,6 +90,18 @@ export default function ContactForm() {
                 onChange={handleChange}
                 required
                 placeholder="tu@email.com"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="phone">Teléfono</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="+56 9 1234 5678"
               />
             </div>
             
@@ -124,6 +157,9 @@ export default function ContactForm() {
             
             {submitStatus === 'success' && (
               <p className="form-success">¡Mensaje enviado! Te responderé pronto.</p>
+            )}
+            {submitStatus === 'error' && (
+              <p className="form-error">{errorMessage}</p>
             )}
           </form>
           

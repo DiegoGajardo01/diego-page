@@ -1063,6 +1063,12 @@ footer {
     font-size: 14px;
 }
 
+.form-error {
+    color: #f87171;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
 .contact-info {
     background-color: #1A1A1A;
     border-radius: 8px;

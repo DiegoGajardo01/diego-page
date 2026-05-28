@@ -24,7 +24,7 @@ export default function Testimonials() {
     <section className="testimonials">
       <div className="container">
         <h2>Lo que dicen mis clientes</h2>
-        <p className="testimonials-subtitle">Testimonios reales de proyectos exitosos</p>
+        <p className="testimonials-subtitle">Testimonios de proyectos exitosos</p>
         <div className="testimonials-grid">
           {testimonials.map((testimonial, index) => (
             <div key={index} className="testimonial-card">

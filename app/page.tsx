@@ -6,7 +6,6 @@ import Projects from '@/components/Projects'
 import Process from '@/components/Process'
 import Skills from '@/components/Skills'
 import Testimonials from '@/components/Testimonials'
-import ContactForm from '@/components/ContactForm'
 import Footer from '@/components/Footer'
 
 export default function Home() {
@@ -20,7 +19,6 @@ export default function Home() {
       <Process />
       <Skills />
       <Testimonials />
-      <ContactForm />
       <Footer />
     </>
   )

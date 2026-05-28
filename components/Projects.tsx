@@ -264,41 +264,47 @@ export default function Projects() {
         <div className="container">
           <h2>Proyectos</h2>
           <div className="projects-container">
-            <div className="projects-carousel" ref={carouselRef}>
-              {projects.map((project) => (
-                <div
-                  key={project.id}
-                  className="project-card"
-                  data-project-id={project.id}
-                >
-                  <h3 className="project-title">{project.title}</h3>
-                  <p className="project-description">{project.description}</p>
-                  <div className="project-tech">
-                    {project.tech.map((tech, index) => (
-                      <span key={index} className="tech-tag">{tech}</span>
-                    ))}
+            <div className="projects-carousel-wrapper">
+              <div className="projects-carousel" ref={carouselRef}>
+                {projects.map((project) => (
+                  <div
+                    key={project.id}
+                    className="project-card"
+                    data-project-id={project.id}
+                  >
+                    <h3 className="project-title">{project.title}</h3>
+                    <p className="project-description">{project.description}</p>
+                    <div className="project-tech">
+                      {project.tech.map((tech, index) => (
+                        <span key={index} className="tech-tag">{tech}</span>
+                      ))}
+                    </div>
+                    <span className="project-link">Ver detalles</span>
                   </div>
-                  <span className="project-link">Ver detalles</span>
-                </div>
-              ))}
-            </div>
-            <div className="carousel-arrows">
-              <button
-                className={`carousel-arrow carousel-arrow-prev ${currentSlide === 0 ? 'disabled' : ''}`}
-                onClick={() => goToSlide(currentSlide - 1)}
-                disabled={currentSlide === 0}
-                aria-label="Proyecto anterior"
-              >
-                &lt;
-              </button>
-              <button
-                className={`carousel-arrow carousel-arrow-next ${currentSlide >= totalPages - 1 ? 'disabled' : ''}`}
-                onClick={() => goToSlide(currentSlide + 1)}
-                disabled={currentSlide >= totalPages - 1}
-                aria-label="Siguiente proyecto"
-              >
-                &gt;
-              </button>
+                ))}
+              </div>
+              <div className="carousel-arrows">
+                <button
+                  className={`carousel-arrow carousel-arrow-prev ${currentSlide === 0 ? 'disabled' : ''}`}
+                  onClick={() => goToSlide(currentSlide - 1)}
+                  disabled={currentSlide === 0}
+                  aria-label="Proyecto anterior"
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="10,3 5,8 10,13" />
+                  </svg>
+                </button>
+                <button
+                  className={`carousel-arrow carousel-arrow-next ${currentSlide >= totalPages - 1 ? 'disabled' : ''}`}
+                  onClick={() => goToSlide(currentSlide + 1)}
+                  disabled={currentSlide >= totalPages - 1}
+                  aria-label="Siguiente proyecto"
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6,3 11,8 6,13" />
+                  </svg>
+                </button>
+              </div>
             </div>
             <div className="carousel-dots">
               {Array.from({ length: totalPages }).map((_, index) => (

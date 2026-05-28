@@ -50,9 +50,6 @@ export default function Header() {
             <Link href="#skills" onClick={closeMenu} aria-label="Ir a Herramientas">
               Herramientas
             </Link>
-            <Link href="#contact" onClick={closeMenu} aria-label="Ir a Contacto">
-              Contacto
-            </Link>
           </div>
           <div 
             className={`menu-overlay ${isMenuOpen ? 'active' : ''}`}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Project } from '@/lib/projects'
 import Image from 'next/image'
 
@@ -11,6 +11,10 @@ interface ProjectModalProps {
 }
 
 export default function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const previousActiveElement = useRef<HTMLElement | null>(null)
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -18,23 +22,66 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
       }
     }
 
+    const handleTabKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || !modalRef.current) return
+
+      const focusableElements = modalRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+      const firstElement = focusableElements[0] as HTMLElement
+      const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          e.preventDefault()
+          lastElement?.focus()
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          e.preventDefault()
+          firstElement?.focus()
+        }
+      }
+    }
+
     if (isOpen) {
+      previousActiveElement.current = document.activeElement as HTMLElement
       document.addEventListener('keydown', handleEscape)
+      document.addEventListener('keydown', handleTabKey)
+      closeButtonRef.current?.focus()
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape)
+      document.removeEventListener('keydown', handleTabKey)
+      if (!isOpen && previousActiveElement.current) {
+        previousActiveElement.current.focus()
+      }
     }
   }, [isOpen, onClose])
 
   if (!isOpen) return null
 
   return (
-    <div className={`modal ${isOpen ? 'show' : ''}`} onClick={onClose}>
+    <div
+      ref={modalRef}
+      className={`modal ${isOpen ? 'show' : ''}`}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <span className="close-modal" onClick={onClose}>&times;</span>
+        <button
+          ref={closeButtonRef}
+          className="close-modal"
+          onClick={onClose}
+          aria-label="Cerrar modal"
+        >
+          &times;
+        </button>
         <div className="modal-header">
-          <h3>{project.title}</h3>
+          <h3 id="modal-title">{project.title}</h3>
         </div>
         <div className="modal-body">
           {project.image && (
@@ -70,4 +117,3 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
     </div>
   )
 }
-

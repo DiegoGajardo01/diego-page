@@ -78,7 +78,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
           onClick={onClose}
           aria-label="Cerrar modal"
         >
-          &times;
+          ← Volver
         </button>
         <div className="modal-header">
           <h3 id="modal-title">{project.title}</h3>

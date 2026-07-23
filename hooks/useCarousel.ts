@@ -5,15 +5,39 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 interface UseCarouselOptions {
   totalItems: number
   mobileBreakpoint?: number
+  autoplay?: boolean
+  autoplayInterval?: number
+  infinite?: boolean
 }
 
-export function useCarousel({ totalItems, mobileBreakpoint = 992 }: UseCarouselOptions) {
+export function useCarousel({
+  totalItems,
+  mobileBreakpoint = 992,
+  autoplay = true,
+  autoplayInterval = 5000,
+  infinite = true
+}: UseCarouselOptions) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [itemsPerView, setItemsPerView] = useState(3)
+  const [isPaused, setIsPaused] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const carouselRef = useRef<HTMLDivElement>(null)
   const isScrollingRef = useRef(false)
+  const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   const totalPages = Math.ceil(totalItems / itemsPerView)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReducedMotion(mediaQuery.matches)
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches)
+    }
+
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
 
   useEffect(() => {
     const updateItemsPerView = () => {
@@ -53,8 +77,15 @@ export function useCarousel({ totalItems, mobileBreakpoint = 992 }: UseCarouselO
   }, [currentSlide, itemsPerView, totalPages, mobileBreakpoint])
 
   const goToSlide = useCallback((index: number) => {
-    if (index < 0) index = 0
-    if (index >= totalPages) index = totalPages - 1
+    let targetIndex = index
+
+    if (infinite) {
+      if (index < 0) targetIndex = totalPages - 1
+      if (index >= totalPages) targetIndex = 0
+    } else {
+      if (index < 0) targetIndex = 0
+      if (index >= totalPages) targetIndex = totalPages - 1
+    }
 
     const carousel = carouselRef.current
     if (!carousel) return
@@ -67,24 +98,32 @@ export function useCarousel({ totalItems, mobileBreakpoint = 992 }: UseCarouselO
 
     let scrollPosition: number
     if (window.innerWidth <= mobileBreakpoint) {
-      scrollPosition = index * (cardWidth + gap)
+      scrollPosition = targetIndex * (cardWidth + gap)
     } else {
       const cardsPerPage = itemsPerView
-      scrollPosition = index * (cardWidth + gap) * cardsPerPage
+      scrollPosition = targetIndex * (cardWidth + gap) * cardsPerPage
     }
 
     isScrollingRef.current = true
     carousel.scrollTo({
       left: scrollPosition,
-      behavior: 'smooth'
+      behavior: prefersReducedMotion ? 'auto' : 'smooth'
     })
 
-    setCurrentSlide(index)
+    setCurrentSlide(targetIndex)
 
     setTimeout(() => {
       isScrollingRef.current = false
-    }, 500)
-  }, [itemsPerView, totalPages, mobileBreakpoint])
+    }, prefersReducedMotion ? 100 : 500)
+  }, [itemsPerView, totalPages, mobileBreakpoint, infinite, prefersReducedMotion])
+
+  const goNext = useCallback(() => {
+    goToSlide(currentSlide + 1)
+  }, [currentSlide, goToSlide])
+
+  const goPrev = useCallback(() => {
+    goToSlide(currentSlide - 1)
+  }, [currentSlide, goToSlide])
 
   useEffect(() => {
     const carousel = carouselRef.current
@@ -99,6 +138,26 @@ export function useCarousel({ totalItems, mobileBreakpoint = 992 }: UseCarouselO
     carousel.addEventListener('scroll', handleScroll, { passive: true })
     return () => carousel.removeEventListener('scroll', handleScroll)
   }, [updateCurrentSlide])
+
+  useEffect(() => {
+    if (!autoplay || isPaused || prefersReducedMotion) {
+      if (autoplayTimerRef.current) {
+        clearInterval(autoplayTimerRef.current)
+        autoplayTimerRef.current = null
+      }
+      return
+    }
+
+    autoplayTimerRef.current = setInterval(() => {
+      goNext()
+    }, autoplayInterval)
+
+    return () => {
+      if (autoplayTimerRef.current) {
+        clearInterval(autoplayTimerRef.current)
+      }
+    }
+  }, [autoplay, isPaused, autoplayInterval, goNext, prefersReducedMotion])
 
   useEffect(() => {
     const carousel = carouselRef.current
@@ -238,12 +297,37 @@ export function useCarousel({ totalItems, mobileBreakpoint = 992 }: UseCarouselO
     }
   }, [itemsPerView, totalPages, goToSlide, mobileBreakpoint])
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!carouselRef.current?.contains(document.activeElement)) return
+
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        goPrev()
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        goNext()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [goNext, goPrev])
+
+  const pause = useCallback(() => setIsPaused(true), [])
+  const resume = useCallback(() => setIsPaused(false), [])
+
   return {
     carouselRef,
     currentSlide,
     totalPages,
     goToSlide,
-    isAtStart: currentSlide === 0,
-    isAtEnd: currentSlide >= totalPages - 1
+    goNext,
+    goPrev,
+    isAtStart: !infinite && currentSlide === 0,
+    isAtEnd: !infinite && currentSlide >= totalPages - 1,
+    pause,
+    resume,
+    progress: ((currentSlide + 1) / totalPages) * 100
   }
 }

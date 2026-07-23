@@ -6,6 +6,7 @@ interface CarouselControlsProps {
   onPrev: () => void
   onNext: () => void
   onGoToSlide: (index: number) => void
+  progress: number
 }
 
 export default function CarouselControls({
@@ -15,10 +16,15 @@ export default function CarouselControls({
   isAtEnd,
   onPrev,
   onNext,
-  onGoToSlide
+  onGoToSlide,
+  progress
 }: CarouselControlsProps) {
   return (
     <>
+      <div className="carousel-progress" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} aria-label="Progreso del carrusel">
+        <div className="carousel-progress-bar" style={{ width: `${progress}%` }} />
+      </div>
+
       <div className="carousel-arrows">
         <button
           className={`carousel-arrow carousel-arrow-prev ${isAtStart ? 'disabled' : ''}`}
@@ -41,7 +47,8 @@ export default function CarouselControls({
           </svg>
         </button>
       </div>
-      <div className="carousel-dots">
+
+      <div className="carousel-dots" role="tablist" aria-label="Páginas del carrusel">
         {Array.from({ length: totalPages }).map((_, index) => (
           <button
             key={index}
@@ -49,6 +56,8 @@ export default function CarouselControls({
             className={`dot ${index === currentSlide ? 'active' : ''}`}
             onClick={() => onGoToSlide(index)}
             aria-label={`Ir a página ${index + 1}`}
+            aria-selected={index === currentSlide}
+            role="tab"
           />
         ))}
       </div>

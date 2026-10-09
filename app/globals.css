@@ -216,13 +216,14 @@ nav {
     gap: 16px;
     overflow-x: auto;
     overflow-y: hidden;
+    padding-block: 24px;
     width: 100%;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    min-height: 380px;
+    min-height: 400px;
 }
 
 .projects-carousel::-webkit-scrollbar {

@@ -48,7 +48,7 @@ export default function CarouselControls({
         </button>
       </div>
 
-      <div className="carousel-dots" role="tablist" aria-label="Páginas del carrusel">
+      <div className="carousel-dots" role="group" aria-label="Páginas del carrusel">
         {Array.from({ length: totalPages }).map((_, index) => (
           <button
             key={index}
@@ -56,8 +56,7 @@ export default function CarouselControls({
             className={`dot ${index === currentSlide ? 'active' : ''}`}
             onClick={() => onGoToSlide(index)}
             aria-label={`Ir a página ${index + 1}`}
-            aria-selected={index === currentSlide}
-            role="tab"
+            aria-current={index === currentSlide ? 'page' : undefined}
           />
         ))}
       </div>

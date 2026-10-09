@@ -10,6 +10,7 @@ import CarouselControls from './CarouselControls'
 const FILTER_CATEGORIES = {
   'Todos': () => true,
   'IA & Machine Learning': (p: Project) =>
+    ['IA', 'Machine Learning'].includes(p.category) ||
     p.tech.some(t => ['TensorFlow', 'Scikit-Learn', 'CNNs', 'YOLO', 'OpenCV', 'OpenAI'].includes(t)),
   'Business Intelligence': (p: Project) =>
     p.tech.some(t => ['Power BI', 'Tableau', 'Pentaho', 'KNIME', 'Excel'].includes(t)),

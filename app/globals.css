@@ -231,7 +231,7 @@ nav {
 
 .project-card {
     flex: 0 0 calc(33.33% - 16px);
-    background-color: #1A1A1A;
+    background-color: #202020;
     border-radius: 12px;
     padding: 28px;
     transition: all 0.3s ease;
@@ -242,7 +242,8 @@ nav {
     flex-direction: column;
     user-select: none;
     scroll-snap-align: start;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
     position: relative;
 }
 
@@ -260,7 +261,7 @@ nav {
 
 .project-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
 }
 

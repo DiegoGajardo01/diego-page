@@ -10,6 +10,21 @@ interface UseCarouselOptions {
   infinite?: boolean
 }
 
+function getPageAnchors(carousel: HTMLDivElement, itemsPerView: number, totalPages: number) {
+  const cards = carousel.querySelectorAll<HTMLElement>('[data-carousel-item]')
+  if (cards.length === 0) return []
+
+  const carouselLeft = carousel.getBoundingClientRect().left
+  const maxScroll = carousel.scrollWidth - carousel.clientWidth
+  const maxPageStart = Math.max(0, cards.length - itemsPerView)
+
+  return Array.from({ length: totalPages }, (_, pageIndex) => {
+    const card = cards[Math.min(pageIndex * itemsPerView, maxPageStart)]
+    const cardLeft = card.getBoundingClientRect().left - carouselLeft + carousel.scrollLeft
+    return Math.max(0, Math.min(cardLeft, maxScroll))
+  })
+}
+
 export function useCarousel({
   totalItems,
   mobileBreakpoint = 992,
@@ -25,7 +40,7 @@ export function useCarousel({
   const isScrollingRef = useRef(false)
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null)
 
-  const totalPages = Math.ceil(totalItems / itemsPerView)
+  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerView))
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -53,28 +68,20 @@ export function useCarousel({
     const carousel = carouselRef.current
     if (!carousel) return
 
-    const cards = carousel.querySelectorAll('[data-carousel-item]')
-    if (cards.length === 0) return
+    const pageAnchors = getPageAnchors(carousel, itemsPerView, totalPages)
+    if (pageAnchors.length === 0) return
 
-    const cardWidth = (cards[0] as HTMLElement).offsetWidth
-    const gap = 10
-    const scrollLeft = carousel.scrollLeft
-    const containerWidth = carousel.offsetWidth
-
-    let newSlide: number
-    if (window.innerWidth <= mobileBreakpoint) {
-      newSlide = Math.round(scrollLeft / (cardWidth + gap))
-    } else {
-      const cardsPerPage = itemsPerView
-      newSlide = Math.round((scrollLeft + containerWidth / 2) / (cardWidth + gap) / cardsPerPage)
-    }
-
-    newSlide = Math.max(0, Math.min(newSlide, totalPages - 1))
+    const newSlide = pageAnchors.reduce((nearestIndex, anchor, index) =>
+      Math.abs(anchor - carousel.scrollLeft) < Math.abs(pageAnchors[nearestIndex] - carousel.scrollLeft)
+        ? index
+        : nearestIndex,
+      0
+    )
 
     if (newSlide !== currentSlide) {
       setCurrentSlide(newSlide)
     }
-  }, [currentSlide, itemsPerView, totalPages, mobileBreakpoint])
+  }, [currentSlide, itemsPerView, totalPages])
 
   const goToSlide = useCallback((index: number) => {
     let targetIndex = index
@@ -90,19 +97,10 @@ export function useCarousel({
     const carousel = carouselRef.current
     if (!carousel) return
 
-    const cards = carousel.querySelectorAll('[data-carousel-item]')
-    if (cards.length === 0) return
+    const pageAnchors = getPageAnchors(carousel, itemsPerView, totalPages)
+    if (pageAnchors.length === 0) return
 
-    const cardWidth = (cards[0] as HTMLElement).offsetWidth
-    const gap = 10
-
-    let scrollPosition: number
-    if (window.innerWidth <= mobileBreakpoint) {
-      scrollPosition = targetIndex * (cardWidth + gap)
-    } else {
-      const cardsPerPage = itemsPerView
-      scrollPosition = targetIndex * (cardWidth + gap) * cardsPerPage
-    }
+    const scrollPosition = pageAnchors[targetIndex]
 
     isScrollingRef.current = true
     carousel.scrollTo({
@@ -115,7 +113,7 @@ export function useCarousel({
     setTimeout(() => {
       isScrollingRef.current = false
     }, prefersReducedMotion ? 100 : 500)
-  }, [itemsPerView, totalPages, mobileBreakpoint, infinite, prefersReducedMotion])
+  }, [itemsPerView, totalPages, infinite, prefersReducedMotion])
 
   const goNext = useCallback(() => {
     goToSlide(currentSlide + 1)
@@ -170,23 +168,15 @@ export function useCarousel({
     let clickTarget: HTMLElement | null = null
 
     const snapToNearestCard = () => {
-      const cards = carousel.querySelectorAll('[data-carousel-item]')
-      if (cards.length === 0) return
+      const pageAnchors = getPageAnchors(carousel, itemsPerView, totalPages)
+      if (pageAnchors.length === 0) return
 
-      const cardWidth = (cards[0] as HTMLElement).offsetWidth
-      const gap = 10
-      const scrollPosition = carousel.scrollLeft
-      const containerWidth = carousel.offsetWidth
-
-      let nearestIndex: number
-      if (window.innerWidth <= mobileBreakpoint) {
-        nearestIndex = Math.round(scrollPosition / (cardWidth + gap))
-      } else {
-        const cardsPerPage = itemsPerView
-        nearestIndex = Math.round((scrollPosition + containerWidth / 2) / (cardWidth + gap) / cardsPerPage)
-      }
-
-      nearestIndex = Math.max(0, Math.min(nearestIndex, totalPages - 1))
+      const nearestIndex = pageAnchors.reduce((nearest, anchor, index) =>
+        Math.abs(anchor - carousel.scrollLeft) < Math.abs(pageAnchors[nearest] - carousel.scrollLeft)
+          ? index
+          : nearest,
+        0
+      )
       goToSlide(nearestIndex)
     }
 
@@ -240,62 +230,18 @@ export function useCarousel({
       carousel.scrollLeft = scrollLeft - walk
     }
 
-    const handleTouchStart = (e: TouchEvent) => {
-      isDown = true
-      hasMoved = false
-      carousel.classList.add('active')
-      startX = e.touches[0].pageX - carousel.offsetLeft
-      scrollLeft = carousel.scrollLeft
-      clickTarget = e.target as HTMLElement
-    }
-
-    const handleTouchEnd = () => {
-      if (isDown) {
-        isDown = false
-        carousel.classList.remove('active')
-        if (hasMoved) {
-          snapToNearestCard()
-        } else {
-          const card = clickTarget?.closest('[data-carousel-item]')
-          if (card) {
-            const event = new CustomEvent('carouselItemClick', {
-              detail: { card },
-              bubbles: true
-            })
-            card.dispatchEvent(event)
-          }
-        }
-        clickTarget = null
-      }
-    }
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!isDown) return
-      hasMoved = true
-      const x = e.touches[0].pageX - carousel.offsetLeft
-      const walk = (x - startX) * 1.5
-      carousel.scrollLeft = scrollLeft - walk
-      e.preventDefault()
-    }
-
     carousel.addEventListener('mousedown', handleMouseDown)
     carousel.addEventListener('mouseleave', handleMouseLeave)
     carousel.addEventListener('mouseup', handleMouseUp)
     carousel.addEventListener('mousemove', handleMouseMove)
-    carousel.addEventListener('touchstart', handleTouchStart, { passive: false })
-    carousel.addEventListener('touchend', handleTouchEnd, { passive: false })
-    carousel.addEventListener('touchmove', handleTouchMove, { passive: false })
 
     return () => {
       carousel.removeEventListener('mousedown', handleMouseDown)
       carousel.removeEventListener('mouseleave', handleMouseLeave)
       carousel.removeEventListener('mouseup', handleMouseUp)
       carousel.removeEventListener('mousemove', handleMouseMove)
-      carousel.removeEventListener('touchstart', handleTouchStart)
-      carousel.removeEventListener('touchend', handleTouchEnd)
-      carousel.removeEventListener('touchmove', handleTouchMove)
     }
-  }, [itemsPerView, totalPages, goToSlide, mobileBreakpoint])
+  }, [itemsPerView, totalPages, goToSlide])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

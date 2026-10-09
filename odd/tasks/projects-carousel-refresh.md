@@ -94,6 +94,8 @@ Carousel dot state and scroll positions can drift because the hook assumes a 10p
 - [ ] PC-2 Reserve vertical room so project-card hover transforms and shadows are not clipped.
 - Cause: .projects-carousel clips vertical overflow while .project-card:hover translates upward and enlarges its shadow.
 - Change: added padding-block: 24px and raised the carousel min-height from 380px to 400px; horizontal scrolling and dot behavior remain unchanged.
-- Verification: pnpm run build passed (exit 0); parent git diff --check pending.
+- Verification: pnpm run build passed (exit 0); parent git diff --check passed (exit 0).
+- Work-unit commit: c8d845e (fix(portfolio): prevent carousel hover clipping).
+- RDD assessment: medium risk, under_budget; no native review was due.
 - Browser hover validation: pending because no browser runtime is available.
 - Engram mirror: unable to verify or update in this resumed context because no authoritative runtime session ID was available.

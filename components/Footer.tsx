@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="container">
         <div className="footer-content">
           <div className="footer-info">
-            <p>© 2025 Diego Gajardo. Todos los derechos reservados.</p>
+            <p>© 2026 Diego Gajardo. Todos los derechos reservados.</p>
           </div>
           <div className="footer-links">
             <a href="https://www.linkedin.com/in/diego-gajardo1/" aria-label="LinkedIn">

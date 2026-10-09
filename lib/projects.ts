@@ -13,6 +13,17 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: 1,
+    title: "Zutura, un sistema para control de citas médicas",
+    description: "Agenda ambulatoria que predice el riesgo de inasistencia y ayuda a recuperar cupos antes de la jornada.",
+    image: "",
+    tech: ["HL7 FHIR", "Modelos de riesgo", "Motor de decisión", "API", "Dashboard"],
+    demoLink: "#",
+    repoLink: "#",
+    fullDescription: "Zutura responde al desafío No Show Dinámico: antes de cada jornada, predice qué citas corren riesgo de quedar vacías, decide a quién contactar y por qué canal (WhatsApp, SMS, llamada o una persona del equipo). También sugiere qué cupo ofrecer a la lista de espera, respetando el tiempo de espera aceptable en sala. El proyecto se trabajó con 8.110 citas sintéticas en formato HL7 FHIR, sin nombres ni RUT y sin datos de pacientes reales. Incluye modelos de riesgo al agendar y a 48 horas, un motor de decisión con API y un panel con mapa, orquestador de contacto y asistente. Predice. Decide. Actúa. Con criterio, no a ciegas.",
+    category: "IA"
+  },
+  {
+    id: 2,
     title: "Agentes de IA para monitoreo de signos vitales",
     description: "Finalista de Hackatón de Agentes skyward. Desarrollé la arquitectura de agentes IA, incluyendo conversación por texto y voz, para el monitoreo de signos vitales en adultos mayores y alertar a familiares ante emergencias (MCP, ElevenLabs, OpenAI).",
     image: "",
@@ -23,7 +34,7 @@ export const projects: Project[] = [
     category: "IA"
   },
   {
-    id: 2,
+    id: 3,
     title: "Sistema de visión por computadora para personas con discapacidad visual",
     description: "Desarrolle un sistema de visión por computadora para personas con discapacidad visual que permite a los usuarios interactuar con el entorno físico a través de una webcam, la cual detecta obstaculos y guía a los usuarios por su camino.",
     image: "",
@@ -34,7 +45,7 @@ export const projects: Project[] = [
     category: "Computer Vision"
   },
   {
-    id: 3,
+    id: 4,
     title: "Business Intelligence para PedalPRO",
     description: "Sistema de BI para empresa de venta de bicicletas, desarrollado como proyecto de tesis. Incluye ETL, tableros de KPIs y análisis predictivo para decisiones comerciales.",
     image: "",
@@ -45,7 +56,7 @@ export const projects: Project[] = [
     category: "BI"
   },
   {
-    id: 4,
+    id: 5,
     title: "Sistema de Análisis Predictivo",
     description: "Desarrollo de algoritmos de Machine Learning para predecir la tasa de abandono (churn) de clientes en una plataforma de e-commerce.",
     image: "",
@@ -56,7 +67,7 @@ export const projects: Project[] = [
     category: "Machine Learning"
   },
   {
-    id: 5,
+    id: 6,
     title: "Chatbot con IA para eCommerce",
     description: "Desarrollo e implementación de un chatbot impulsado por LLMs para atención al cliente en plataforma de comercio electrónico.",
     image: "",
@@ -67,7 +78,7 @@ export const projects: Project[] = [
     category: "IA"
   },
   {
-    id: 6,
+    id: 7,
     title: "Clasificación de Imágenes con CNN",
     description: "Algoritmo de reconocimiento de imágenes para clasificar productos por categorías utilizando Redes Neuronales Convolucionales.",
     image: "",

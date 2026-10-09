@@ -81,3 +81,10 @@ Carousel dot state and scroll positions can drift because the hook assumes a 10p
 
 1. Carousel pagination must clamp the final page anchor to the last full visible-card group; anchoring the final individual card cannot align it because browser scroll range ends earlier.
 2. The project provides no dedicated test script, so the production build is the available automated functional check for this change.
+
+## Commit and review status
+
+- Work-unit commit: b02d7a4 (fix(portfolio): stabilize projects carousel).
+- RDD assessment: medium risk, under_budget; no native review was due for this committed range.
+- Engram mirror: unable to verify or resynchronize in the resumed context because no authoritative runtime session ID was available.
+- Browser validation remains pending.
